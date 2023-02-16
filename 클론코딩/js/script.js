@@ -1,5 +1,26 @@
 // 이미지 및 리소스 로드 후 코드실행
 window.onload = function () {
+    // AOS 셋팅
+    AOS.init()
+    // Waypoint 활용
+    let goTop = document.querySelector('.gotop');
+
+    // 스크롤의 위치에 따른 dic 비교대상
+    let visual = document.querySelector('.service')
+
+    new Waypoint({
+        element : visual,
+        handler : function (dir){
+            // dir 의 값에 따라 처리
+            if(dir === "down"){
+                goTop.classList.add("active")
+            } else {
+                goTop.classList.remove("active")
+            }
+        },
+        // 해당 div 의 화면상에 얼마나 보이는가?
+        offset: "50%"
+    })
 
     let htmlTag = document.querySelector("html");
     // 모바일 메뉴 버튼 처리
@@ -109,7 +130,7 @@ window.onload = function () {
             // console.log(req.response)
             // 아래 구문을 반드시 체크하자
             const dataArr = JSON.parse(req.response);
-            console.log(dataArr);
+            // console.log(dataArr);
         }
     }
     xhttp.open("GET", "data.json");
@@ -131,12 +152,12 @@ window.onload = function () {
                 html += `<li>${count++}</li>`
             });
             swUl.innerHTML = html;
-            console.log(html);
+            // console.log(html);
             // 자바스크립트가 li를 참조하도록 적용
             swList = document.querySelectorAll(".swvisual-list li");
             // li 태그를 클릭해서 슬라이드 이동하기
             swListShow();
-            console.log(visualData);
+            // console.log(visualData);
             showVT(visualData[0],0);
         })
         .catch((err) => {
@@ -156,7 +177,7 @@ window.onload = function () {
 
         // 타이틀 내용 보여주기
         function showVT(_data, _idx){
-            console.log(_data); 
+            // console.log(_data); 
             swTitle.innerHTML = _data.title;
             swTxt.innerHTML = _data.txt;
             if(_data.link === "no"){ 
@@ -209,9 +230,30 @@ window.onload = function () {
     });
     // swVisual 슬라이드가 변경될 때마다 하고 싶은일 진행
     swVisual.on("slideChange", function(){ 
-        console.log("진짜 html 태그의 순서", swVisual.realIndex);
-        console.log("모션이 되는 순서", swVisual.activeIndex);
+        // console.log("진짜 html 태그의 순서", swVisual.realIndex);
+        // console.log("모션이 되는 순서", swVisual.activeIndex);
         // 텍스트를 수정한다.
-        showVT(visualData[swVisual.realIndex], swVisual.realIndex);
+        showVT(visualData[swVisual.realIndex],swVisual.realIndex);
     });
+    // 카테고리 슬라이드 
+    new Swiper(".swcategory", {
+        loop:true,
+        slidesPerView: 1,        
+        breakpoints: {
+            480: {
+                loop:true,
+                slidesPerView: 2,
+            },
+            768: {
+                loop:true,
+                slidesPerView: 3,
+            }
+        },
+    });
+
+    // 안내창 기능
+    let categoryPop = document.querySelector('.category-pop')
+    categoryPop.addEventListener('click',e=>{
+        categoryPop.classList.add('active')
+    })
 }
