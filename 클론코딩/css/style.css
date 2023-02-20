@@ -494,6 +494,7 @@ html.active {
   height: 100vh;
 }
 .service .inner {
+  /* max-height: 780px; */
   height: 100%;
   padding: 180px 30px;
 }
@@ -638,6 +639,8 @@ html.active {
 }
 
 .info-left {
+  font-size: 44px;
+  line-height: 1.35;
   width: calc(50% - 10px);
   height: 100%;
   background: yellow;
